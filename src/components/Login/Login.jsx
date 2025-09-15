@@ -1,11 +1,13 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useRef, useState } from "react";
 import { auth } from "../../Firebase.init";
 import { Link } from "react-router-dom";
 
 const Login = () => {
     const [errorMsg, setErrorMsg] = useState('');
-    const [successMsg, setSuccessMsg] = useState(false)
+    const [successMsg, setSuccessMsg] = useState(false);
+
+    const emailRef = useRef();
 
     const handleLogin = e =>{
         e.preventDefault();
@@ -32,6 +34,23 @@ const Login = () => {
             setErrorMsg(error.message)
         })
     }
+
+    const handleForgetPassword = () =>{
+        console.log(emailRef.current.value);
+        const email = emailRef.current.value;
+        
+        setErrorMsg('')
+
+        sendPasswordResetEmail(auth, email)
+        .then(() =>{
+            alert(`Check your email: ${email} to reset password`)
+        })
+        .catch(error =>{
+            setErrorMsg(error.message)
+        })
+        
+    }
+
   return (
     <div className=" w-3/4 mx-auto">
       <div className="hero bg-base-200 min-h-screen w-3/4 mx-auto">
@@ -48,7 +67,7 @@ const Login = () => {
             <div className="card-body">
               <form onSubmit={handleLogin} className="fieldset">
                 <label className="label">Email</label>
-                <input type="email" name="email" className="input" placeholder="Email" />
+                <input type="email" name="email" ref={emailRef} className="input" placeholder="Email" />
                 <label className="label">Password</label>
                 <input
                 
@@ -57,7 +76,7 @@ const Login = () => {
                   className="input"
                   placeholder="Password"
                 />
-                <div>
+                <div onClick={handleForgetPassword}>
                   <a className="link link-hover">Forgot password?</a>
                 </div>
                 <button className="btn btn-neutral mt-4">Login</button>
