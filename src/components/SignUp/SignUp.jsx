@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { auth } from "../../Firebase.init";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -106,6 +107,9 @@ const SignUp = () => {
                     Yea! Successfully Sign up!
                   </p>
                 )}
+
+
+                <p>Already Have An Account? <Link className="underline text-blue-500" to='/login'>Please Login</Link></p>
               </form>
             </div>
           </div>
