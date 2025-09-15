@@ -6,6 +6,7 @@ const Navbar = () => {
        <li><NavLink to='/home' className={({isActive}) => isActive ? 'bg-green-300 text-black' : ''}>Home</NavLink></li>
        <li><NavLink to='/login' className={({isActive}) => isActive ? 'bg-green-300 text-black' : ''}>Login</NavLink></li>
        <li><NavLink to='/register' className={({isActive}) => isActive ? 'bg-green-300 text-black' : ''}>Register</NavLink></li>
+       <li><NavLink to='/signup' className={({isActive}) => isActive ? 'bg-green-300 text-black' : ''}>Sign Up</NavLink></li>
     </>
   return (
     <div>
