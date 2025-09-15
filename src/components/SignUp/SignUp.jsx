@@ -1,11 +1,15 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../Firebase.init";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+
 
 const SignUp = () => {
 
     const [errorMessage, setErrorMessage] = useState('')
     const [successMessage, setSuccessMessage] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
 
     
   
@@ -60,23 +64,35 @@ const SignUp = () => {
                 <label className="label" >Email</label>
                 <input type="email" name="email" className="input" placeholder="Email" />
                 <label className="label">Password</label>
+               <div className="relative">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   className="input"
                   placeholder="Password"
                 />
+                <button onClick={() => setShowPassword(!showPassword)} className="btn btn-xs absolute right-6 top-2">
+                  
+                  {
+                    showPassword ? <FaEyeSlash/> : <FaEye/>
+                  }
+
+                </button>
+               </div> 
                 <div>
                   <a className="link link-hover">Forgot password?</a>
 
                 </div>
-                {
-                    errorMessage && <p className="text-red-500">{errorMessage}</p>
-                }
-                {
-                    successMessage && <p className="text-green-400">Yea! Successfully Sign up!</p>
-                }
+                
                 <button className="btn btn-neutral mt-4">Sign Up</button>
+
+                {
+                    errorMessage && <p className="text-red-500 font-bold text-lg my-3">{errorMessage}</p>
+                }
+                {
+                    successMessage && <p className="text-green-400 font-bold text-lg my-3">Yea! Successfully Sign up!</p>
+                }
+
               </form>
             </div>
           </div>
