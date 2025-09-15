@@ -4,47 +4,48 @@ import { auth } from "../../Firebase.init";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 
-
 const SignUp = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-    const [errorMessage, setErrorMessage] = useState('')
-    const [successMessage, setSuccessMessage] = useState(false)
-    const [showPassword, setShowPassword] = useState(false)
-
-    
-  
-  const handleSignup = e =>{
+  const handleSignup = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email, password)
+    const terms = e.target.terms.checked;
 
-    setErrorMessage('')
-    setSuccessMessage(false)
+    console.log(email, password);
 
+    setErrorMessage("");
+    setSuccessMessage(false);
 
     // VALIDATE PASSWORD FIRST BEFORE GOING INSIDE FIREBASE
-    
+
     const passwordRegularExpression = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
 
-    if(passwordRegularExpression.test(password)===false){
-       
-        setErrorMessage('Password must be lowercase, uppercase, number, & 8 characters long')
+    if (passwordRegularExpression.test(password) === false) {
+      setErrorMessage(
+        "Password must be lowercase, uppercase, number, & 8 characters long"
+      );
+      return;
+    }
+    
+    if(!terms){
+        setErrorMessage('Accept terms & conditions politely!')
         return;
     }
 
-
     createUserWithEmailAndPassword(auth, email, password)
-    .then(result =>{
+      .then((result) => {
         console.log(result);
-        setSuccessMessage(true)
-        
-    })
-    .catch(error =>{
+        setSuccessMessage(true);
+      })
+      .catch((error) => {
         console.log(error);
-        setErrorMessage(error.message)
-    })
-  }
+        setErrorMessage(error.message);
+      });
+  };
 
   return (
     <div>
@@ -61,38 +62,50 @@ const SignUp = () => {
           <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
             <div className="card-body">
               <form className="fieldset" onSubmit={handleSignup}>
-                <label className="label" >Email</label>
-                <input type="email" name="email" className="input" placeholder="Email" />
-                <label className="label">Password</label>
-               <div className="relative">
+                <label className="label">Email</label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
+                  type="email"
+                  name="email"
                   className="input"
-                  placeholder="Password"
+                  placeholder="Email"
                 />
-                <button onClick={() => setShowPassword(!showPassword)} className="btn btn-xs absolute right-6 top-2">
-                  
-                  {
-                    showPassword ? <FaEyeSlash/> : <FaEye/>
-                  }
-
-                </button>
-               </div> 
+                <label className="label">Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    className="input"
+                    placeholder="Password"
+                  />
+                  <button
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="btn btn-xs absolute right-6 top-2"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
                 <div>
                   <a className="link link-hover">Forgot password?</a>
-
                 </div>
-                
+
+                <label className="label">
+                  <input type="checkbox" name="terms" className="checkbox" />
+                  Accept terms and conditions.
+                  
+                </label>
+
                 <button className="btn btn-neutral mt-4">Sign Up</button>
 
-                {
-                    errorMessage && <p className="text-red-500 font-bold text-lg my-3">{errorMessage}</p>
-                }
-                {
-                    successMessage && <p className="text-green-400 font-bold text-lg my-3">Yea! Successfully Sign up!</p>
-                }
-
+                {errorMessage && (
+                  <p className="text-red-500 font-bold text-lg my-3">
+                    {errorMessage}
+                  </p>
+                )}
+                {successMessage && (
+                  <p className="text-green-400 font-bold text-lg my-3">
+                    Yea! Successfully Sign up!
+                  </p>
+                )}
               </form>
             </div>
           </div>
