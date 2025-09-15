@@ -5,16 +5,36 @@ import { auth } from "../../Firebase.init";
 const SignUp = () => {
 
     const [errorMessage, setErrorMessage] = useState('')
+    const [successMessage, setSuccessMessage] = useState(false)
+
+    
   
   const handleSignup = e =>{
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     console.log(email, password)
+
+    setErrorMessage('')
+    setSuccessMessage(false)
+
+
+    // VALIDATE PASSWORD FIRST BEFORE GOING INSIDE FIREBASE
+    
+    const passwordRegularExpression = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+
+    if(passwordRegularExpression.test(password)===false){
+       
+        setErrorMessage('Password must be lowercase, uppercase, number, & 8 characters long')
+        return;
+    }
+
+
     createUserWithEmailAndPassword(auth, email, password)
     .then(result =>{
-        console.log(result)
-        setErrorMessage('')
+        console.log(result);
+        setSuccessMessage(true)
+        
     })
     .catch(error =>{
         console.log(error);
@@ -52,6 +72,9 @@ const SignUp = () => {
                 </div>
                 {
                     errorMessage && <p className="text-red-500">{errorMessage}</p>
+                }
+                {
+                    successMessage && <p className="text-green-400">Yea! Successfully Sign up!</p>
                 }
                 <button className="btn btn-neutral mt-4">Sign Up</button>
               </form>
