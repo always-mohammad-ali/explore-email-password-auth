@@ -1,4 +1,6 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React from "react";
+import { auth } from "../../Firebase.init";
 
 const Register = () => {
     const handleRegister = (e) =>{
@@ -6,11 +8,19 @@ const Register = () => {
         const email = e.target.email.value;
         const password = e.target.password.value;
         console.log(email, password)
+
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(result => {
+            console.log(result)
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
     
   return (
-    <div>
-      <h1>Register</h1>
+    <div className="max-w-screen-sm  mx-auto text-center p-3">
+      <h1 className="text-3xl font-bold text-green-300 my-7">Register</h1>
       <form onSubmit={handleRegister}>
       <div className="join">
         <div>
